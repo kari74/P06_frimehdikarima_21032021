@@ -10,6 +10,7 @@ const userRoutes = require('./routes/user');
 
 
 //mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.8cgev.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`,
+ 
 mongoose.connect('mongodb+srv://frimehdikarima:mdpsopekocko@cluster0.nhnqu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     { useNewUrlParser: true,
     useUnifiedTopology: true })
