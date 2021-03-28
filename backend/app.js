@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require ('mongoose') //importation mongoose
+const mongoose = require ('mongoose') 
 const path = require('path');
 const helmet = require('helmet')
 require('dotenv').config() 
@@ -8,9 +8,9 @@ require('dotenv').config()
 const sauceRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
+//mongoose.connect(MONGODB_URL,
+//mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.nhnqu.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`,
 
-//mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.8cgev.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`,
- 
 mongoose.connect('mongodb+srv://frimehdikarima:mdpsopekocko@cluster0.nhnqu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -34,5 +34,5 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 //routes
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
-
+app.use(helmet());
 module.exports = app;
