@@ -1,13 +1,27 @@
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken');
+const maskData = require('maskdata');
+const passwordValidator = require ('password-validator');
+const User = require('../models/user');
+const passwordSchema = new passwordValidator();
 
-const User = require('../models/user')
+passwordSchema
+.is().min(6)                                                                  // length mini mdp = 6 caractères
+.is().max(32)                                                                 // length max mdp = 32 caractères
+.has().uppercase()                                                            // Le mdp doit contenir au moins une majuscule
+.has().lowercase()                                                            // Le mdp doit contenir au moins une minuscule
+.has().digits()                                                               // Le mdp doit contenir au moins un chiffre
+.has().not().spaces()                                                         // Le mdp ne doit pas contenir d'espace
+.is().not().oneOf(['Passw0rd', 'Password123', '123456', 'Azerty123']);        // Exclusion de mdp trop simples 
 
 exports.signup = (req, res, next) => {
+  if (!passwordSchema.validate(req.body.password)) {
+    res.status(401).json({message:"Sécurité du mot de passe faible. Il doit contenir au moins 8 caractère, des majuscules et deux chiffres"})
+  }
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const user = new User({
-        email: req.body.email,
+        email: maskData.maskEmail2(req.body.email),
         password: hash
       });
       user.save()
@@ -18,7 +32,7 @@ exports.signup = (req, res, next) => {
   };
 
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ email:maskData.maskEmail2(req.body.email) })
     .then(user => {
       if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' });

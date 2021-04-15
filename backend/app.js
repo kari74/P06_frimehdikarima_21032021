@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require ('mongoose') 
 const path = require('path');
 const helmet = require('helmet')
-
+const app = express();
  require('dotenv').config()
 
 
@@ -20,9 +20,9 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cl
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
-  const app = express(); //application express
+ 
 
-// parametre CORS
+// parametre CORS 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
